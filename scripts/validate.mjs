@@ -18,14 +18,18 @@ if (!existsSync(path)) {
     errors.push('SKILL.md: no YAML frontmatter');
   } else {
     const fields = frontmatter[1];
-    const name = fields.match(/^name:\s*(\S+)/m)?.[1];
-    if (name !== 'styleref-figma') errors.push(`SKILL.md: frontmatter name is "${name}", expected "styleref-figma"`);
-    if (!/^description:\s*\S/m.test(fields)) errors.push('SKILL.md: frontmatter has no "description"');
+    // Exactly one of each key, and the name on its own line: a second `name:`
+    // would let a YAML reader see a different value than this check did.
+    if ((fields.match(/^name:/gm) ?? []).length !== 1) errors.push('SKILL.md: frontmatter needs exactly one "name"');
+    else if (!/^name:[ \t]+styleref-figma[ \t]*$/m.test(fields)) errors.push('SKILL.md: frontmatter name must be "styleref-figma"');
+    if ((fields.match(/^description:[ \t]+\S/gm) ?? []).length !== 1) {
+      errors.push('SKILL.md: frontmatter needs exactly one "description"');
+    }
   }
 }
 
 if (errors.length) {
-  for (const error of errors) console.error(`::error::${error}`);
+  for (const error of errors) console.error(`::error::${error.replace(/[%\r\n]/g, ' ')}`);
   process.exit(1);
 }
 console.log('ok: SKILL.md (styleref-figma)');
