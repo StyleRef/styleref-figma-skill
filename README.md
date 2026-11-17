@@ -14,10 +14,7 @@ and reads the style already on the canvas back out.
   them down as a portable specification.
 
 This is a skill, not a Figma plugin: there is nothing to install from the Figma
-Community. It is also separate from the
-[StyleRef plugin for Claude](https://github.com/StyleRef/styleref-skill), which
-covers ChatGPT, Claude, Midjourney, FLUX, Stable Diffusion and a repo's
-`STYLE.md`.
+Community.
 
 ## Install
 
